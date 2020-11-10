@@ -15,7 +15,7 @@ Database can be visualised by means of https://sqlitebrowser.org/ by importing:
 lab01-json-rest\REST APIs Implementation\database\databaseV2.db
 
 To test the app, use the following credentials:
-- Username: john.doe@polito.it
+- Username: user.dsp@polito.it
 - Password: password
 
 
