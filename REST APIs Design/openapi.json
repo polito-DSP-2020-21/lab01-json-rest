@@ -724,25 +724,6 @@
   },
   "components": {
     "schemas": {
-      "Page": {
-        "type": "object",
-        "properties": {
-          "$schema": {
-            "type": "string",
-            "description": "path to the JSON Schema to use for the validation of the JSON file describing the task"
-          },
-          "id": {
-            "type": "integer",
-            "description": "unique identifier for the task"
-          },
-          "tasks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Task"
-            }
-          }
-        }
-      },
       "Task": {
         "type": "object",
         "properties": {
