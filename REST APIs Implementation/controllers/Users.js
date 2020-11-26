@@ -5,7 +5,7 @@ var Users = require('../service/UsersService');
 var authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
 var jsonwebtoken = require('jsonwebtoken');
 var jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYxsvX';
-const expireTime = 300; //seconds
+const expireTime = 604800; //seconds
 
 module.exports.authenticateUser = function authenticateUser (req, res, next) {
   

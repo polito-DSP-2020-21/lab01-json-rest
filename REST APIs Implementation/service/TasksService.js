@@ -128,7 +128,7 @@ exports.getUserTasks = function(req) {
     return new Promise((resolve, reject) => {
         var sql;
         if(req.query.assignee == null)
-            sql = "SELECT t.id as tid, t.description, t.important, t.private, t.project, t.deadline,t.completed, u.id as uid, u.name, u.email FROM tasks as t, users as u, assignments as a WHERE t.id = a.task AND a.user = u.id";
+            sql = "SELECT t.id as tid, t.description, t.important, t.private, t.project, t.deadline,t.completed FROM tasks as t";
         else
             sql =  "SELECT t.id as tid, t.description, t.important, t.private, t.project, t.deadline,t.completed, u.id as uid, u.name, u.email FROM tasks as t, users as u, assignments as a WHERE t.id = a.task AND a.user = u.id AND u.id = ?";
         var limits = getPagination(req);
@@ -156,7 +156,7 @@ exports.getUserTasksTotal = function(req) {
     return new Promise((resolve, reject) => {
         var sqlNumOfTasks;
         if(req.query.assignee == null)
-            sqlNumOfTasks = "SELECT count(*) total FROM tasks as t, users as u, assignments as a WHERE t.id = a.task AND a.user = u.id";
+            sqlNumOfTasks = "SELECT count(*) total FROM tasks as t";
         else
             sqlNumOfTasks = "SELECT count(*) total FROM tasks as t, users as u, assignments as a WHERE t.id = a.task AND a.user = u.id AND u.id = ?";
         db.get(sqlNumOfTasks, req.query.assignee, (err, size) => {
@@ -179,8 +179,32 @@ exports.getUserTasksTotal = function(req) {
  **/
 exports.updateSingleTask = function(task, taskId) {
     return new Promise((resolve, reject) => {
-        const sql = 'UPDATE tasks SET description = ?, important = ?, private = ?, project = ?, deadline = ?, completed = ? WHERE id = ?';
-        db.run(sql, [task.description, task.important, task.private, task.project, task.deadline, task.completed, taskId], function(err) {
+        var sql = 'UPDATE tasks SET description = ?';
+        var parameters = [task.description];
+        if(task.important != undefined){
+            sql = sql.concat(', important = ?');
+            parameters.push(task.important);
+        } 
+        if(task.private != undefined){
+            sql = sql.concat(', private = ?');
+            parameters.push(task.private);
+        } 
+        if(task.project != undefined){
+            sql = sql.concat(', project = ?');
+            parameters.push(task.project);
+        } 
+        if(task.deadline != undefined){
+            sql = sql.concat(', deadline = ?');
+            parameters.push(task.deadline);
+        } 
+        if(task.completed != undefined){
+            sql = sql.concat(', completed = ?');
+            parameters.push(task.completed);
+        } 
+        sql = sql.concat(' WHERE id = ?');
+        parameters.push(task.id);
+
+        db.run(sql, parameters, function(err) {
             if (err) {
                 reject(err);
             } else if (this.changes == 0) {

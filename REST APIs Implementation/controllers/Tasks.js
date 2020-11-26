@@ -38,9 +38,7 @@ module.exports.getPublicTasks = function getPublicTasks(req, res, next) {
             if (req.query.pageNo == null) var pageNo = 1;
             else var pageNo = req.query.pageNo;
             var totalPage=Math.ceil(numOfTasks / constants.OFFSET);
-            var responseLength=response.length;
-            if(pageNo==totalPage) responseLength=0;
-            next = Number(pageNo) + responseLength;
+            next = Number(pageNo) + 1;
 
             if (pageNo>totalPage) {
                 utils.writeJson(res, { errors: [{ 'param': 'Server', 'msg': "The page does not exist." }], }, 404);
@@ -96,9 +94,7 @@ module.exports.getUserTasks = function getUserTasks(req, res, next) {
             else var pageNo = req.query.pageNo;
             var totalPage=Math.ceil(numOfTasks / constants.OFFSET);
             
-            var responseLength=response.length;
-            if(pageNo==totalPage) responseLength=0;
-            next = Number(pageNo) + responseLength;
+            next = Number(pageNo) + 1;
 
             if (pageNo>totalPage) {
                 utils.writeJson(res, { errors: [{ 'param': 'Server', 'msg': "The page does not exist." }], }, 404);
